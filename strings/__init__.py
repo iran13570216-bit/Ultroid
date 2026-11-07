@@ -55,7 +55,7 @@ def get_string(key: str, _res: bool = True) -> Any:
         return english
 
     try:
-        translated = translate(english, lang_tgt=lang).replace(r"\\ N", "\\n")
+        translated = translate(english, lang_tgt=lang).replace(r"\ N", "\n")
         if translated.count("{}") != english.count("{}"):
             translated = english
     except Exception as er:
