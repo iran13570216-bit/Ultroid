@@ -91,7 +91,7 @@ PERSIAN_COMMANDS = {
     "sticker": "استیکر",
     "kang": "کنگ",
     "block": "بلاک",
-    "unblock": "رفع بلاک",
+    "unblock": "رفعبلاک",
     "mute": "سکوت",
     "unmute": "رفعسکوت",
     "warn": "اخطار",
