@@ -11,7 +11,9 @@ try:
 except ModuleNotFoundError:
     from pyUltroid.fns.tools import safe_load
 
-ULTConfig.lang = udB.get_key("language") or os.getenv("LANGUAGE", "en")
+# Persian is the default for this fork; an explicit database or environment
+# language setting still takes precedence.
+ULTConfig.lang = udB.get_key("language") or os.getenv("LANGUAGE", "fa")
 
 languages = {}
 PATH = "strings/strings/{}.yml"
@@ -42,7 +44,7 @@ def get_string(key: str, _res: bool = True) -> Any:
     except KeyError:
         try:
             en_ = languages["en"][key]
-            tr = translate(en_, lang_tgt=lang).replace(r"\ N", "\n")
+            tr = translate(en_, lang_tgt=lang).replace(r"\ N", "\\n")
             if en_.count("{}") != tr.count("{}"):
                 tr = en_
             if languages.get(lang):
