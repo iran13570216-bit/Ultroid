@@ -55,13 +55,83 @@ black_list_chats = udB.get_key("BLACKLIST_CHATS")
 allow_sudo = SUDO_M.should_allow_sudo
 
 
+# Common Persian aliases. Original English commands remain fully supported.
+PERSIAN_COMMANDS = {
+    "help": "راهنما",
+    "alive": "زنده",
+    "ping": "پینگ",
+    "cmds": "دستورات",
+    "update": "بروزرسانی",
+    "restart": "راهاندازی",
+    "shutdown": "خاموش",
+    "logs": "گزارش",
+    "afk": "غایب",
+    "ban": "مسدود",
+    "unban": "رفعمسدود",
+    "kick": "اخراج",
+    "promote": "ارتقا",
+    "demote": "تنزل",
+    "pin": "سنجاق",
+    "unpin": "لغوسنجاق",
+    "purge": "پاکسازی",
+    "purgeall": "پاکسازیهمه",
+    "getlink": "دریافتلینک",
+    "setdb": "تنظیمپایگاه",
+    "deldb": "حذفپایگاه",
+    "calc": "ماشینحساب",
+    "echo": "تکرار",
+    "getid": "شناسه",
+    "id": "شناسه",
+    "info": "اطلاعات",
+    "weather": "آبوهوا",
+    "translate": "ترجمه",
+    "tr": "ترجمه",
+    "time": "زمان",
+    "date": "تاریخ",
+    "sticker": "استیکر",
+    "kang": "کنگ",
+    "block": "بلاک",
+    "unblock": "رفع بلاک",
+    "mute": "سکوت",
+    "unmute": "رفعسکوت",
+    "warn": "اخطار",
+    "warns": "اخطارها",
+    "filter": "فیلتر",
+    "unfilter": "حذففیلتر",
+    "notes": "یادداشتها",
+    "save": "ذخیره",
+    "get": "دریافت",
+    "del": "حذف",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "profile": "نمایه",
+    "bio": "زندگینامه",
+    "setbio": "تنظیمزندگینامه",
+    "shortlink": "لینککوتاه",
+    "shorten": "کوتاهسازی",
+    "upload": "آپلود",
+    "download": "دانلود",
+    "zip": "زیپ",
+    "unzip": "بازکردنزیپ",
+}
+
+
 def compile_pattern(data, hndlr):
     if data.startswith("^"):
         data = data[1:]
     if data.startswith("."):
         data = data[1:]
+
+    # Add a Persian alternative only to the command's leading literal token.
+    # Keep all original regex groups, arguments and English aliases untouched.
+    match = re.match(r"([A-Za-z][A-Za-z0-9_-]*)", data)
+    if match:
+        command = match.group(1)
+        alias = PERSIAN_COMMANDS.get(command.lower())
+        if alias:
+            data = f"(?:{command}|{alias})" + data[len(command):]
+
     if hndlr in [" ", "NO_HNDLR"]:
-        # No Hndlr Feature
         return re.compile("^" + data)
     return re.compile("\\" + hndlr + data)
 
