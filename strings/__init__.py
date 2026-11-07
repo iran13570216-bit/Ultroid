@@ -11,7 +11,8 @@ except ModuleNotFoundError:
     from pyUltroid.fns.tools import safe_load
 
 # Persian is the default for this fork. An explicit DB/environment setting wins.
-ULTConfig.lang = udB.get_key("language") or os.getenv("LANGUAGE", "fa")
+configured_language = udB.get_key("language") or os.getenv("ULTROID_LANG", "fa")
+ULTConfig.lang = configured_language.split("_", 1)[0].lower()
 
 languages = {}
 PATH = "strings/strings/{}.yml"
